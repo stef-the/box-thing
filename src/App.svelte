@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from "svelte";
 
-	export const size = [23, 10]
+	export const size = [23, 11]
 	export let coords = [0, 0]
 	export const movementInputs = ['w', 'a', 's', 'd', 'ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight']
 	export let frozen = false;
@@ -26,7 +26,7 @@
 		let game = buildgame(size[0], size[1]);
 		for (let i in game) {
 			for (let j in game[i]) {
-				temp += `<div id="block${i}-${j}" class="p-4 m-1 bg-red-300 hover:bg-yellow-200"></div>`
+				temp += `<div id="block${i}-${j}" class="p-1p m-2/3p bg-red-300 hover:bg-yellow-200"></div>`
 			}
 			temp += '<div class="w-full"></div>'
 		}
@@ -64,11 +64,11 @@
 			else if (event.key === 'd' || event.key === 'ArrowRight') { right('block') }
 		} else if (event.key === 'Enter' || event.key === ' ') {
 			let item = document.getElementById(`block${coords[1]}-${coords[0]}`)
-			item.classList.toggle('p-3')
-			item.classList.toggle('m-2')
+			item.classList.toggle('p-1p')
+			item.classList.toggle('m-2/3p')
 
-			item.classList.toggle('p-2')
-			item.classList.toggle('m-3')
+			item.classList.toggle('p-2/3p')
+			item.classList.toggle('m-1p')
 
 			frozen = true;
 		} else { console.log('keydown: ' + event.key) }
@@ -94,11 +94,11 @@
 			button.classList.toggle('bg-gray-600')
 		} else if (event.key === 'Enter' || event.key === ' ') {
 			let item = document.getElementById(`block${coords[1]}-${coords[0]}`)
-			item.classList.toggle('p-3')
-			item.classList.toggle('m-2')
+			item.classList.toggle('p-1p')
+			item.classList.toggle('m-2/3p')
 
-			item.classList.toggle('p-2')
-			item.classList.toggle('m-3')
+			item.classList.toggle('p-2/3p')
+			item.classList.toggle('m-1p')
 
 			frozen = false;
 		} else { console.log('keyup: ' + event.key) }
@@ -109,13 +109,13 @@
 
 		item.classList.toggle('bg-red-300')
 		item.classList.toggle('hover:bg-yellow-200')
-		item.classList.toggle('p-4')
-		item.classList.toggle('m-1')
+		item.classList.toggle('p-1p')
+		item.classList.toggle('m-2/3p')
 
 		item.classList.toggle('bg-gray-300')
 		item.classList.toggle('hover:bg-gray-400')
-		item.classList.toggle('p-3')
-		item.classList.toggle('m-2')
+		item.classList.toggle('p-4/3p')
+		item.classList.toggle('m-1/3p')
 	}
 
 	function up () {

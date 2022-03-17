@@ -10,4 +10,18 @@ module.exports = {
 		enabled: production, // disable purge in dev
 	},
 	variants: ["responsive", "group-hover", "hover", "focus", "active"],
+	theme: {
+		extend: {
+			padding: {
+				"1p": "1%",
+				"2/3p": "0.666%",
+				"4/3p": "1.333%"
+			},
+			margin: {
+				"1p": "1%",
+				"2/3p": "0.666%",
+				"1/3p": "0.333%"
+			}
+		}
+	}
 };

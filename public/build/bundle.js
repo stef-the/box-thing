@@ -400,27 +400,27 @@ var app = (function () {
     			button3.textContent = "→";
     			attr_dev(div0, "id", "app");
     			attr_dev(div0, "class", "w-full flex flex-wrap justify-center m-10");
-    			add_location(div0, file, 148, 1, 3970);
+    			add_location(div0, file, 148, 1, 4000);
     			attr_dev(button0, "id", "w");
     			attr_dev(button0, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 p-2 m-1 w-9");
-    			add_location(button0, file, 150, 2, 4102);
+    			add_location(button0, file, 150, 2, 4132);
     			attr_dev(button1, "id", "a");
     			attr_dev(button1, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 p-2 m-1 w-9");
-    			add_location(button1, file, 152, 3, 4306);
+    			add_location(button1, file, 152, 3, 4336);
     			attr_dev(button2, "id", "s");
     			attr_dev(button2, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 p-2 m-1 w-9");
-    			add_location(button2, file, 153, 3, 4453);
+    			add_location(button2, file, 153, 3, 4483);
     			attr_dev(button3, "id", "d");
     			attr_dev(button3, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 p-2 m-1 w-9");
-    			add_location(button3, file, 154, 3, 4600);
+    			add_location(button3, file, 154, 3, 4630);
     			attr_dev(div1, "id", "controlrow");
     			attr_dev(div1, "class", "flex justify-center w-full");
-    			add_location(div1, file, 151, 2, 4246);
+    			add_location(div1, file, 151, 2, 4276);
     			attr_dev(div2, "id", "controls");
     			attr_dev(div2, "class", "flex justify-center flex-wrap");
-    			add_location(div2, file, 149, 1, 4042);
+    			add_location(div2, file, 149, 1, 4072);
     			attr_dev(main, "class", "flex justify-center flex-wrap");
-    			add_location(main, file, 147, 0, 3924);
+    			add_location(main, file, 147, 0, 3954);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -491,7 +491,7 @@ var app = (function () {
     function instance($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('App', slots, []);
-    	const size = [23, 10];
+    	const size = [23, 11];
     	let { coords = [0, 0] } = $$props;
     	const movementInputs = ['w', 'a', 's', 'd', 'ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'];
     	let { frozen = false } = $$props;
@@ -504,7 +504,7 @@ var app = (function () {
 
     		for (let i in game) {
     			for (let j in game[i]) {
-    				temp += `<div id="block${i}-${j}" class="p-4 m-1 bg-red-300 hover:bg-yellow-200"></div>`;
+    				temp += `<div id="block${i}-${j}" class="p-1p m-2/3p bg-red-300 hover:bg-yellow-200"></div>`;
     			}
 
     			temp += '<div class="w-full"></div>';
@@ -549,10 +549,10 @@ var app = (function () {
     			}
     		} else if (event.key === 'Enter' || event.key === ' ') {
     			let item = document.getElementById(`block${coords[1]}-${coords[0]}`);
-    			item.classList.toggle('p-3');
-    			item.classList.toggle('m-2');
-    			item.classList.toggle('p-2');
-    			item.classList.toggle('m-3');
+    			item.classList.toggle('p-1p');
+    			item.classList.toggle('m-2/3p');
+    			item.classList.toggle('p-2/3p');
+    			item.classList.toggle('m-1p');
     			$$invalidate(5, frozen = true);
     		} else {
     			console.log('keydown: ' + event.key);
@@ -580,10 +580,10 @@ var app = (function () {
     			button.classList.toggle('bg-gray-600');
     		} else if (event.key === 'Enter' || event.key === ' ') {
     			let item = document.getElementById(`block${coords[1]}-${coords[0]}`);
-    			item.classList.toggle('p-3');
-    			item.classList.toggle('m-2');
-    			item.classList.toggle('p-2');
-    			item.classList.toggle('m-3');
+    			item.classList.toggle('p-1p');
+    			item.classList.toggle('m-2/3p');
+    			item.classList.toggle('p-2/3p');
+    			item.classList.toggle('m-1p');
     			$$invalidate(5, frozen = false);
     		} else {
     			console.log('keyup: ' + event.key);
@@ -594,12 +594,12 @@ var app = (function () {
     		let item = document.getElementById(`block${coords[1]}-${coords[0]}`);
     		item.classList.toggle('bg-red-300');
     		item.classList.toggle('hover:bg-yellow-200');
-    		item.classList.toggle('p-4');
-    		item.classList.toggle('m-1');
+    		item.classList.toggle('p-1p');
+    		item.classList.toggle('m-2/3p');
     		item.classList.toggle('bg-gray-300');
     		item.classList.toggle('hover:bg-gray-400');
-    		item.classList.toggle('p-3');
-    		item.classList.toggle('m-2');
+    		item.classList.toggle('p-4/3p');
+    		item.classList.toggle('m-1/3p');
     	}
 
     	function up() {
