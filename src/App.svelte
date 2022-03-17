@@ -4,6 +4,7 @@
 	export const size = [23, 10]
 	export let coords = [0, 0]
 	export const movementInputs = ['w', 'a', 's', 'd', 'ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight']
+	export let frozen = false;
 
 	function buildgame (a, b) {
 		let templistA;
@@ -40,7 +41,7 @@
 	body.addEventListener("keyup", onkeyup_handler)
 
 	function onkeydown_handler (event) {
-		if (movementInputs.includes(event.key)) {
+		if (movementInputs.includes(event.key) && !frozen) {
 			let id;
 			if ('wasd'.includes(event.key)) {
 				id = event.key;
@@ -57,24 +58,32 @@
 			button.classList.toggle('bg-gray-500')
 			button.classList.toggle('text-yellow-300')
 			button.classList.toggle('bg-gray-600')
-		}
-		if (event.key == 'w' || event.key == 'ArrowUp') { up('block') } 
-		else if (event.key == 'a' || event.key == 'ArrowLeft') { left('block') }
-		else if (event.key == 's' || event.key == 'ArrowDown') { down('block') }
-		else if (event.key == 'd' || event.key == 'ArrowRight') { right('block') }
-		else { console.log('keydown: ' + event.key) }
+			if (event.key === 'w' || event.key === 'ArrowUp') { up('block') } 
+			else if (event.key === 'a' || event.key === 'ArrowLeft') { left('block') }
+			else if (event.key === 's' || event.key === 'ArrowDown') { down('block') }
+			else if (event.key === 'd' || event.key === 'ArrowRight') { right('block') }
+		} else if (event.key === 'Enter' || event.key === ' ') {
+			let item = document.getElementById(`block${coords[1]}-${coords[0]}`)
+			item.classList.toggle('p-3')
+			item.classList.toggle('m-2')
+
+			item.classList.toggle('p-2')
+			item.classList.toggle('m-3')
+
+			frozen = true;
+		} else { console.log('keydown: ' + event.key) }
 	}
 
 	function onkeyup_handler (event) {
-		if (movementInputs.includes(event.key)) {
+		if (movementInputs.includes(event.key) && !frozen) {
 			let id;
 			if ('wasd'.includes(event.key)) {
 				id = event.key;
 			} else {
 				id = (
-					(event.key == 'ArrowUp') ? 'w' : (
-						(event.key == 'ArrowLeft') ? 'a' : (
-							(event.key == 'ArrowDown') ? 's' : 'd')
+					(event.key === 'ArrowUp') ? 'w' : (
+						(event.key === 'ArrowLeft') ? 'a' : (
+							(event.key === 'ArrowDown') ? 's' : 'd')
 					)
 				)
 			}
@@ -83,11 +92,20 @@
 			button.classList.toggle('bg-gray-500')
 			button.classList.toggle('text-yellow-300')
 			button.classList.toggle('bg-gray-600')
+		} else if (event.key === 'Enter' || event.key === ' ') {
+			let item = document.getElementById(`block${coords[1]}-${coords[0]}`)
+			item.classList.toggle('p-3')
+			item.classList.toggle('m-2')
+
+			item.classList.toggle('p-2')
+			item.classList.toggle('m-3')
+
+			frozen = false;
 		} else { console.log('keyup: ' + event.key) }
 	}
 
 	function stoggle () {
-		let item = document.getElementById('block' + coords[1] + '-' + coords[0])
+		let item = document.getElementById(`block${coords[1]}-${coords[0]}`)
 
 		item.classList.toggle('bg-red-300')
 		item.classList.toggle('hover:bg-yellow-200')

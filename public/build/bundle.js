@@ -400,27 +400,27 @@ var app = (function () {
     			button3.textContent = "→";
     			attr_dev(div0, "id", "app");
     			attr_dev(div0, "class", "w-full flex flex-wrap justify-center m-10");
-    			add_location(div0, file, 138, 1, 3373);
+    			add_location(div0, file, 148, 1, 3970);
     			attr_dev(button0, "id", "w");
     			attr_dev(button0, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 p-2 m-1 w-9");
-    			add_location(button0, file, 140, 2, 3505);
+    			add_location(button0, file, 150, 2, 4102);
     			attr_dev(button1, "id", "a");
     			attr_dev(button1, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 p-2 m-1 w-9");
-    			add_location(button1, file, 142, 3, 3709);
+    			add_location(button1, file, 152, 3, 4306);
     			attr_dev(button2, "id", "s");
     			attr_dev(button2, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 p-2 m-1 w-9");
-    			add_location(button2, file, 143, 3, 3856);
+    			add_location(button2, file, 153, 3, 4453);
     			attr_dev(button3, "id", "d");
     			attr_dev(button3, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 p-2 m-1 w-9");
-    			add_location(button3, file, 144, 3, 4003);
+    			add_location(button3, file, 154, 3, 4600);
     			attr_dev(div1, "id", "controlrow");
     			attr_dev(div1, "class", "flex justify-center w-full");
-    			add_location(div1, file, 141, 2, 3649);
+    			add_location(div1, file, 151, 2, 4246);
     			attr_dev(div2, "id", "controls");
     			attr_dev(div2, "class", "flex justify-center flex-wrap");
-    			add_location(div2, file, 139, 1, 3445);
+    			add_location(div2, file, 149, 1, 4042);
     			attr_dev(main, "class", "flex justify-center flex-wrap");
-    			add_location(main, file, 137, 0, 3327);
+    			add_location(main, file, 147, 0, 3924);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -441,10 +441,10 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(button0, "click", /*click_handler*/ ctx[7], false, false, false),
-    					listen_dev(button1, "click", /*click_handler_1*/ ctx[8], false, false, false),
-    					listen_dev(button2, "click", /*click_handler_2*/ ctx[9], false, false, false),
-    					listen_dev(button3, "click", /*click_handler_3*/ ctx[10], false, false, false)
+    					listen_dev(button0, "click", /*click_handler*/ ctx[8], false, false, false),
+    					listen_dev(button1, "click", /*click_handler_1*/ ctx[9], false, false, false),
+    					listen_dev(button2, "click", /*click_handler_2*/ ctx[10], false, false, false),
+    					listen_dev(button3, "click", /*click_handler_3*/ ctx[11], false, false, false)
     				];
 
     				mounted = true;
@@ -494,6 +494,7 @@ var app = (function () {
     	const size = [23, 10];
     	let { coords = [0, 0] } = $$props;
     	const movementInputs = ['w', 'a', 's', 'd', 'ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'];
+    	let { frozen = false } = $$props;
 
     	function game(id) {
     		const container = document.getElementById(id);
@@ -518,7 +519,7 @@ var app = (function () {
     	body.addEventListener("keyup", onkeyup_handler);
 
     	function onkeydown_handler(event) {
-    		if (movementInputs.includes(event.key)) {
+    		if (movementInputs.includes(event.key) && !frozen) {
     			let id;
 
     			if (('wasd').includes(event.key)) {
@@ -536,33 +537,40 @@ var app = (function () {
     			button.classList.toggle('bg-gray-500');
     			button.classList.toggle('text-yellow-300');
     			button.classList.toggle('bg-gray-600');
-    		}
 
-    		if (event.key == 'w' || event.key == 'ArrowUp') {
-    			up();
-    		} else if (event.key == 'a' || event.key == 'ArrowLeft') {
-    			left();
-    		} else if (event.key == 's' || event.key == 'ArrowDown') {
-    			down();
-    		} else if (event.key == 'd' || event.key == 'ArrowRight') {
-    			right();
+    			if (event.key === 'w' || event.key === 'ArrowUp') {
+    				up();
+    			} else if (event.key === 'a' || event.key === 'ArrowLeft') {
+    				left();
+    			} else if (event.key === 's' || event.key === 'ArrowDown') {
+    				down();
+    			} else if (event.key === 'd' || event.key === 'ArrowRight') {
+    				right();
+    			}
+    		} else if (event.key === 'Enter' || event.key === ' ') {
+    			let item = document.getElementById(`block${coords[1]}-${coords[0]}`);
+    			item.classList.toggle('p-3');
+    			item.classList.toggle('m-2');
+    			item.classList.toggle('p-2');
+    			item.classList.toggle('m-3');
+    			$$invalidate(5, frozen = true);
     		} else {
     			console.log('keydown: ' + event.key);
     		}
     	}
 
     	function onkeyup_handler(event) {
-    		if (movementInputs.includes(event.key)) {
+    		if (movementInputs.includes(event.key) && !frozen) {
     			let id;
 
     			if (('wasd').includes(event.key)) {
     				id = event.key;
     			} else {
-    				id = event.key == 'ArrowUp'
+    				id = event.key === 'ArrowUp'
     				? 'w'
-    				: event.key == 'ArrowLeft'
+    				: event.key === 'ArrowLeft'
     					? 'a'
-    					: event.key == 'ArrowDown' ? 's' : 'd';
+    					: event.key === 'ArrowDown' ? 's' : 'd';
     			}
 
     			let button = document.getElementById(id);
@@ -570,13 +578,20 @@ var app = (function () {
     			button.classList.toggle('bg-gray-500');
     			button.classList.toggle('text-yellow-300');
     			button.classList.toggle('bg-gray-600');
+    		} else if (event.key === 'Enter' || event.key === ' ') {
+    			let item = document.getElementById(`block${coords[1]}-${coords[0]}`);
+    			item.classList.toggle('p-3');
+    			item.classList.toggle('m-2');
+    			item.classList.toggle('p-2');
+    			item.classList.toggle('m-3');
+    			$$invalidate(5, frozen = false);
     		} else {
     			console.log('keyup: ' + event.key);
     		}
     	}
 
     	function stoggle() {
-    		let item = document.getElementById('block' + coords[1] + '-' + coords[0]);
+    		let item = document.getElementById(`block${coords[1]}-${coords[0]}`);
     		item.classList.toggle('bg-red-300');
     		item.classList.toggle('hover:bg-yellow-200');
     		item.classList.toggle('p-4');
@@ -628,7 +643,7 @@ var app = (function () {
     	}
 
     	onMount(() => game('app'));
-    	const writable_props = ['coords'];
+    	const writable_props = ['coords', 'frozen'];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1.warn(`<App> was created with unknown prop '${key}'`);
@@ -641,6 +656,7 @@ var app = (function () {
 
     	$$self.$$set = $$props => {
     		if ('coords' in $$props) $$invalidate(4, coords = $$props.coords);
+    		if ('frozen' in $$props) $$invalidate(5, frozen = $$props.frozen);
     	};
 
     	$$self.$capture_state = () => ({
@@ -648,6 +664,7 @@ var app = (function () {
     		size,
     		coords,
     		movementInputs,
+    		frozen,
     		buildgame,
     		game,
     		body,
@@ -662,6 +679,7 @@ var app = (function () {
 
     	$$self.$inject_state = $$props => {
     		if ('coords' in $$props) $$invalidate(4, coords = $$props.coords);
+    		if ('frozen' in $$props) $$invalidate(5, frozen = $$props.frozen);
     		if ('body' in $$props) body = $$props.body;
     	};
 
@@ -675,6 +693,7 @@ var app = (function () {
     		down,
     		right,
     		coords,
+    		frozen,
     		size,
     		movementInputs,
     		click_handler,
@@ -687,7 +706,13 @@ var app = (function () {
     class App extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance, create_fragment, safe_not_equal, { size: 5, coords: 4, movementInputs: 6 });
+
+    		init(this, options, instance, create_fragment, safe_not_equal, {
+    			size: 6,
+    			coords: 4,
+    			movementInputs: 7,
+    			frozen: 5
+    		});
 
     		dispatch_dev("SvelteRegisterComponent", {
     			component: this,
@@ -698,7 +723,7 @@ var app = (function () {
     	}
 
     	get size() {
-    		return this.$$.ctx[5];
+    		return this.$$.ctx[6];
     	}
 
     	set size(value) {
@@ -714,10 +739,18 @@ var app = (function () {
     	}
 
     	get movementInputs() {
-    		return this.$$.ctx[6];
+    		return this.$$.ctx[7];
     	}
 
     	set movementInputs(value) {
+    		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get frozen() {
+    		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set frozen(value) {
     		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
