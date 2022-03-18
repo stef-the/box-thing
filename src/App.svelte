@@ -3,8 +3,12 @@
 
 	export const size = [23, 11]
 	export let coords = [0, 0]
+	export let generatorcoords = [];
 	export const movementInputs = ['w', 'a', 's', 'd', 'ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight']
 	export let frozen = false;
+	export let gameboard = buildgame(size[0], size[1]);
+
+	function randomNumber(min, max) { return Math.floor(Math.random() * (max - min) + min); }
 
 	function buildgame (a, b) {
 		let templistA;
@@ -12,21 +16,26 @@
 		for (let i = 0; i < b; i++) {
 			templistA = [];
 			for (let j = 0; j < a; j++) {
-				templistA.push(1);
+				templistA.push(0);
 			}
 			templistB.push(templistA)
 		}
 		return templistB;
 	};
 
+	function generategame (range) {
+		generatorcoords = [randomNumber(0, size[0]), randomNumber(0, size[1])]
+	}
+
 	function game (id) {
 		const container = document.getElementById(id);
 		container.innerHTML = '';
 		let temp = '';
-		let game = buildgame(size[0], size[1]);
-		for (let i in game) {
-			for (let j in game[i]) {
-				temp += `<div id="block${i}-${j}" class="p-1p m-2/3p bg-red-300 hover:bg-yellow-200"></div>`
+
+		for (let i in gameboard) {
+			for (let j in gameboard[i]) {
+				console.log(gameboard[i][j])
+				temp += `<div id="block${i}-${j}" class="h-5 w-5 m-2 text-sm bg-red-300 hover:bg-yellow-200 flex flex-wrap justify-center items-center">${(!isNaN(gameboard[i][j])) ? gameboard[i][j] : ""}</div>`
 			}
 			temp += '<div class="w-full"></div>'
 		}
@@ -64,11 +73,15 @@
 			else if (event.key === 'd' || event.key === 'ArrowRight') { right('block') }
 		} else if (event.key === 'Enter' || event.key === ' ') {
 			let item = document.getElementById(`block${coords[1]}-${coords[0]}`)
-			item.classList.toggle('p-1p')
-			item.classList.toggle('m-2/3p')
-
-			item.classList.toggle('p-2/3p')
-			item.classList.toggle('m-1p')
+			item.classList.toggle('m-2')
+			item.classList.toggle('h-5')
+			item.classList.toggle('w-5')
+			item.classList.toggle('text-sm')
+			
+			item.classList.toggle('m-1')
+			item.classList.toggle('h-7')
+			item.classList.toggle('w-7')
+			item.classList.toggle('text-base')
 
 			frozen = true;
 		} else { console.log('keydown: ' + event.key) }
@@ -94,11 +107,15 @@
 			button.classList.toggle('bg-gray-600')
 		} else if (event.key === 'Enter' || event.key === ' ') {
 			let item = document.getElementById(`block${coords[1]}-${coords[0]}`)
-			item.classList.toggle('p-1p')
-			item.classList.toggle('m-2/3p')
+			item.classList.toggle('m-2')
+			item.classList.toggle('h-5')
+			item.classList.toggle('w-5')
+			item.classList.toggle('text-sm')
 
-			item.classList.toggle('p-2/3p')
-			item.classList.toggle('m-1p')
+			item.classList.toggle('m-1')
+			item.classList.toggle('h-7')
+			item.classList.toggle('w-7')
+			item.classList.toggle('text-base')
 
 			frozen = false;
 		} else { console.log('keyup: ' + event.key) }
@@ -109,13 +126,17 @@
 
 		item.classList.toggle('bg-red-300')
 		item.classList.toggle('hover:bg-yellow-200')
-		item.classList.toggle('p-1p')
-		item.classList.toggle('m-2/3p')
+		item.classList.toggle('m-2')
+		item.classList.toggle('h-5')
+		item.classList.toggle('w-5')
+		item.classList.toggle('text-sm')
 
 		item.classList.toggle('bg-gray-300')
 		item.classList.toggle('hover:bg-gray-400')
-		item.classList.toggle('p-4/3p')
-		item.classList.toggle('m-1/3p')
+		item.classList.toggle('m-1')
+		item.classList.toggle('h-7')
+		item.classList.toggle('w-7')
+		item.classList.toggle('text-base')
 	}
 
 	function up () {
@@ -145,14 +166,14 @@
 	onMount(() => game('app'))
 </script>
 
-<main class="flex justify-center flex-wrap">
+<main class="flex justify-center flex-wrap text-xs">
 	<div id="app" class="w-full flex flex-wrap justify-center m-10"></div>
 	<div id="controls" class="flex justify-center flex-wrap">
-		<button id="w" on:click={() => up('block')} class="text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 p-2 m-1 w-9">↑</button>
+		<button id="w" on:click={() => up('block')} class="text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 m-1 w-7 h-7">↑</button>
 		<div id="controlrow" class="flex justify-center w-full">
-			<button id="a" on:click={() => left('block')} class="text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 p-2 m-1 w-9">←</button>
-			<button id="s" on:click={() => down('block')} class="text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 p-2 m-1 w-9">↓</button>
-			<button id="d" on:click={() => right('block')} class="text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 p-2 m-1 w-9">→</button>
+			<button id="a" on:click={() => left('block')} class="text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 m-1 w-7 h-7">←</button>
+			<button id="s" on:click={() => down('block')} class="text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 m-1 w-7 h-7">↓</button>
+			<button id="d" on:click={() => right('block')} class="text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 m-1 w-7 h-7">→</button>
 		</div>
 	</div>
 	

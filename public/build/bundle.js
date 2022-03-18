@@ -400,27 +400,27 @@ var app = (function () {
     			button3.textContent = "→";
     			attr_dev(div0, "id", "app");
     			attr_dev(div0, "class", "w-full flex flex-wrap justify-center m-10");
-    			add_location(div0, file, 148, 1, 4000);
+    			add_location(div0, file, 169, 1, 4788);
     			attr_dev(button0, "id", "w");
-    			attr_dev(button0, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 p-2 m-1 w-9");
-    			add_location(button0, file, 150, 2, 4132);
+    			attr_dev(button0, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 m-1 w-7 h-7");
+    			add_location(button0, file, 171, 2, 4920);
     			attr_dev(button1, "id", "a");
-    			attr_dev(button1, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 p-2 m-1 w-9");
-    			add_location(button1, file, 152, 3, 4336);
+    			attr_dev(button1, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 m-1 w-7 h-7");
+    			add_location(button1, file, 173, 3, 5124);
     			attr_dev(button2, "id", "s");
-    			attr_dev(button2, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 p-2 m-1 w-9");
-    			add_location(button2, file, 153, 3, 4483);
+    			attr_dev(button2, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 m-1 w-7 h-7");
+    			add_location(button2, file, 174, 3, 5271);
     			attr_dev(button3, "id", "d");
-    			attr_dev(button3, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 p-2 m-1 w-9");
-    			add_location(button3, file, 154, 3, 4630);
+    			attr_dev(button3, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 m-1 w-7 h-7");
+    			add_location(button3, file, 175, 3, 5418);
     			attr_dev(div1, "id", "controlrow");
     			attr_dev(div1, "class", "flex justify-center w-full");
-    			add_location(div1, file, 151, 2, 4276);
+    			add_location(div1, file, 172, 2, 5064);
     			attr_dev(div2, "id", "controls");
     			attr_dev(div2, "class", "flex justify-center flex-wrap");
-    			add_location(div2, file, 149, 1, 4072);
-    			attr_dev(main, "class", "flex justify-center flex-wrap");
-    			add_location(main, file, 147, 0, 3954);
+    			add_location(div2, file, 170, 1, 4860);
+    			attr_dev(main, "class", "flex justify-center flex-wrap text-xs");
+    			add_location(main, file, 168, 0, 4734);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -441,10 +441,10 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(button0, "click", /*click_handler*/ ctx[8], false, false, false),
-    					listen_dev(button1, "click", /*click_handler_1*/ ctx[9], false, false, false),
-    					listen_dev(button2, "click", /*click_handler_2*/ ctx[10], false, false, false),
-    					listen_dev(button3, "click", /*click_handler_3*/ ctx[11], false, false, false)
+    					listen_dev(button0, "click", /*click_handler*/ ctx[10], false, false, false),
+    					listen_dev(button1, "click", /*click_handler_1*/ ctx[11], false, false, false),
+    					listen_dev(button2, "click", /*click_handler_2*/ ctx[12], false, false, false),
+    					listen_dev(button3, "click", /*click_handler_3*/ ctx[13], false, false, false)
     				];
 
     				mounted = true;
@@ -471,6 +471,10 @@ var app = (function () {
     	return block;
     }
 
+    function randomNumber(min, max) {
+    	return Math.floor(Math.random() * (max - min) + min);
+    }
+
     function buildgame(a, b) {
     	let templistA;
     	let templistB = [];
@@ -479,7 +483,7 @@ var app = (function () {
     		templistA = [];
 
     		for (let j = 0; j < a; j++) {
-    			templistA.push(1);
+    			templistA.push(0);
     		}
 
     		templistB.push(templistA);
@@ -493,18 +497,24 @@ var app = (function () {
     	validate_slots('App', slots, []);
     	const size = [23, 11];
     	let { coords = [0, 0] } = $$props;
+    	let { generatorcoords = [] } = $$props;
     	const movementInputs = ['w', 'a', 's', 'd', 'ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'];
     	let { frozen = false } = $$props;
+    	let { gameboard = buildgame(size[0], size[1]) } = $$props;
+
+    	function generategame(range) {
+    		$$invalidate(5, generatorcoords = [randomNumber(0, size[0]), randomNumber(0, size[1])]);
+    	}
 
     	function game(id) {
     		const container = document.getElementById(id);
     		container.innerHTML = '';
     		let temp = '';
-    		let game = buildgame(size[0], size[1]);
 
-    		for (let i in game) {
-    			for (let j in game[i]) {
-    				temp += `<div id="block${i}-${j}" class="p-1p m-2/3p bg-red-300 hover:bg-yellow-200"></div>`;
+    		for (let i in gameboard) {
+    			for (let j in gameboard[i]) {
+    				console.log(gameboard[i][j]);
+    				temp += `<div id="block${i}-${j}" class="h-5 w-5 m-2 text-sm bg-red-300 hover:bg-yellow-200 flex flex-wrap justify-center items-center">${!isNaN(gameboard[i][j]) ? gameboard[i][j] : ""}</div>`;
     			}
 
     			temp += '<div class="w-full"></div>';
@@ -549,11 +559,15 @@ var app = (function () {
     			}
     		} else if (event.key === 'Enter' || event.key === ' ') {
     			let item = document.getElementById(`block${coords[1]}-${coords[0]}`);
-    			item.classList.toggle('p-1p');
-    			item.classList.toggle('m-2/3p');
-    			item.classList.toggle('p-2/3p');
-    			item.classList.toggle('m-1p');
-    			$$invalidate(5, frozen = true);
+    			item.classList.toggle('m-2');
+    			item.classList.toggle('h-5');
+    			item.classList.toggle('w-5');
+    			item.classList.toggle('text-sm');
+    			item.classList.toggle('m-1');
+    			item.classList.toggle('h-7');
+    			item.classList.toggle('w-7');
+    			item.classList.toggle('text-base');
+    			$$invalidate(6, frozen = true);
     		} else {
     			console.log('keydown: ' + event.key);
     		}
@@ -580,11 +594,15 @@ var app = (function () {
     			button.classList.toggle('bg-gray-600');
     		} else if (event.key === 'Enter' || event.key === ' ') {
     			let item = document.getElementById(`block${coords[1]}-${coords[0]}`);
-    			item.classList.toggle('p-1p');
-    			item.classList.toggle('m-2/3p');
-    			item.classList.toggle('p-2/3p');
-    			item.classList.toggle('m-1p');
-    			$$invalidate(5, frozen = false);
+    			item.classList.toggle('m-2');
+    			item.classList.toggle('h-5');
+    			item.classList.toggle('w-5');
+    			item.classList.toggle('text-sm');
+    			item.classList.toggle('m-1');
+    			item.classList.toggle('h-7');
+    			item.classList.toggle('w-7');
+    			item.classList.toggle('text-base');
+    			$$invalidate(6, frozen = false);
     		} else {
     			console.log('keyup: ' + event.key);
     		}
@@ -594,12 +612,16 @@ var app = (function () {
     		let item = document.getElementById(`block${coords[1]}-${coords[0]}`);
     		item.classList.toggle('bg-red-300');
     		item.classList.toggle('hover:bg-yellow-200');
-    		item.classList.toggle('p-1p');
-    		item.classList.toggle('m-2/3p');
+    		item.classList.toggle('m-2');
+    		item.classList.toggle('h-5');
+    		item.classList.toggle('w-5');
+    		item.classList.toggle('text-sm');
     		item.classList.toggle('bg-gray-300');
     		item.classList.toggle('hover:bg-gray-400');
-    		item.classList.toggle('p-4/3p');
-    		item.classList.toggle('m-1/3p');
+    		item.classList.toggle('m-1');
+    		item.classList.toggle('h-7');
+    		item.classList.toggle('w-7');
+    		item.classList.toggle('text-base');
     	}
 
     	function up() {
@@ -643,7 +665,7 @@ var app = (function () {
     	}
 
     	onMount(() => game('app'));
-    	const writable_props = ['coords', 'frozen'];
+    	const writable_props = ['coords', 'generatorcoords', 'frozen', 'gameboard'];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1.warn(`<App> was created with unknown prop '${key}'`);
@@ -656,16 +678,22 @@ var app = (function () {
 
     	$$self.$$set = $$props => {
     		if ('coords' in $$props) $$invalidate(4, coords = $$props.coords);
-    		if ('frozen' in $$props) $$invalidate(5, frozen = $$props.frozen);
+    		if ('generatorcoords' in $$props) $$invalidate(5, generatorcoords = $$props.generatorcoords);
+    		if ('frozen' in $$props) $$invalidate(6, frozen = $$props.frozen);
+    		if ('gameboard' in $$props) $$invalidate(9, gameboard = $$props.gameboard);
     	};
 
     	$$self.$capture_state = () => ({
     		onMount,
     		size,
     		coords,
+    		generatorcoords,
     		movementInputs,
     		frozen,
+    		gameboard,
+    		randomNumber,
     		buildgame,
+    		generategame,
     		game,
     		body,
     		onkeydown_handler,
@@ -679,7 +707,9 @@ var app = (function () {
 
     	$$self.$inject_state = $$props => {
     		if ('coords' in $$props) $$invalidate(4, coords = $$props.coords);
-    		if ('frozen' in $$props) $$invalidate(5, frozen = $$props.frozen);
+    		if ('generatorcoords' in $$props) $$invalidate(5, generatorcoords = $$props.generatorcoords);
+    		if ('frozen' in $$props) $$invalidate(6, frozen = $$props.frozen);
+    		if ('gameboard' in $$props) $$invalidate(9, gameboard = $$props.gameboard);
     		if ('body' in $$props) body = $$props.body;
     	};
 
@@ -693,9 +723,11 @@ var app = (function () {
     		down,
     		right,
     		coords,
+    		generatorcoords,
     		frozen,
     		size,
     		movementInputs,
+    		gameboard,
     		click_handler,
     		click_handler_1,
     		click_handler_2,
@@ -708,10 +740,12 @@ var app = (function () {
     		super(options);
 
     		init(this, options, instance, create_fragment, safe_not_equal, {
-    			size: 6,
+    			size: 7,
     			coords: 4,
-    			movementInputs: 7,
-    			frozen: 5
+    			generatorcoords: 5,
+    			movementInputs: 8,
+    			frozen: 6,
+    			gameboard: 9
     		});
 
     		dispatch_dev("SvelteRegisterComponent", {
@@ -723,7 +757,7 @@ var app = (function () {
     	}
 
     	get size() {
-    		return this.$$.ctx[6];
+    		return this.$$.ctx[7];
     	}
 
     	set size(value) {
@@ -738,8 +772,16 @@ var app = (function () {
     		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
+    	get generatorcoords() {
+    		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set generatorcoords(value) {
+    		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
     	get movementInputs() {
-    		return this.$$.ctx[7];
+    		return this.$$.ctx[8];
     	}
 
     	set movementInputs(value) {
@@ -751,6 +793,14 @@ var app = (function () {
     	}
 
     	set frozen(value) {
+    		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get gameboard() {
+    		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set gameboard(value) {
     		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
