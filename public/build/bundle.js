@@ -400,27 +400,27 @@ var app = (function () {
     			button3.textContent = "→";
     			attr_dev(div0, "id", "app");
     			attr_dev(div0, "class", "w-full flex flex-wrap justify-center m-10");
-    			add_location(div0, file, 169, 1, 4788);
+    			add_location(div0, file, 173, 1, 4982);
     			attr_dev(button0, "id", "w");
     			attr_dev(button0, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 m-1 w-7 h-7");
-    			add_location(button0, file, 171, 2, 4920);
+    			add_location(button0, file, 175, 2, 5114);
     			attr_dev(button1, "id", "a");
     			attr_dev(button1, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 m-1 w-7 h-7");
-    			add_location(button1, file, 173, 3, 5124);
+    			add_location(button1, file, 177, 3, 5318);
     			attr_dev(button2, "id", "s");
     			attr_dev(button2, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 m-1 w-7 h-7");
-    			add_location(button2, file, 174, 3, 5271);
+    			add_location(button2, file, 178, 3, 5465);
     			attr_dev(button3, "id", "d");
     			attr_dev(button3, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 m-1 w-7 h-7");
-    			add_location(button3, file, 175, 3, 5418);
+    			add_location(button3, file, 179, 3, 5612);
     			attr_dev(div1, "id", "controlrow");
     			attr_dev(div1, "class", "flex justify-center w-full");
-    			add_location(div1, file, 172, 2, 5064);
+    			add_location(div1, file, 176, 2, 5258);
     			attr_dev(div2, "id", "controls");
     			attr_dev(div2, "class", "flex justify-center flex-wrap");
-    			add_location(div2, file, 170, 1, 4860);
+    			add_location(div2, file, 174, 1, 5054);
     			attr_dev(main, "class", "flex justify-center flex-wrap text-xs");
-    			add_location(main, file, 168, 0, 4734);
+    			add_location(main, file, 172, 0, 4928);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -502,18 +502,20 @@ var app = (function () {
     	let { frozen = false } = $$props;
     	let { gameboard = buildgame(size[0], size[1]) } = $$props;
 
-    	function generategame(range) {
+    	function generategame(a, b) {
     		$$invalidate(5, generatorcoords = [randomNumber(0, size[0]), randomNumber(0, size[1])]);
+    		$$invalidate(7, gameboard[generatorcoords[1]][generatorcoords[0]] = randomNumber(a, b), gameboard);
+    		$$invalidate(4, coords = generatorcoords);
     	}
 
     	function game(id) {
     		const container = document.getElementById(id);
     		container.innerHTML = '';
     		let temp = '';
+    		generategame(1, 5);
 
     		for (let i in gameboard) {
     			for (let j in gameboard[i]) {
-    				console.log(gameboard[i][j]);
     				temp += `<div id="block${i}-${j}" class="h-5 w-5 m-2 text-sm bg-red-300 hover:bg-yellow-200 flex flex-wrap justify-center items-center">${!isNaN(gameboard[i][j]) ? gameboard[i][j] : ""}</div>`;
     			}
 
@@ -521,7 +523,6 @@ var app = (function () {
     		}
 
     		container.innerHTML += temp;
-    		$$invalidate(4, coords = [0, 0]);
     		stoggle();
     	}
     	let body = document.getElementsByTagName('body')[0];
@@ -567,6 +568,7 @@ var app = (function () {
     			item.classList.toggle('h-7');
     			item.classList.toggle('w-7');
     			item.classList.toggle('text-base');
+    			item.classList.toggle('font-semibold');
     			$$invalidate(6, frozen = true);
     		} else {
     			console.log('keydown: ' + event.key);
@@ -602,6 +604,7 @@ var app = (function () {
     			item.classList.toggle('h-7');
     			item.classList.toggle('w-7');
     			item.classList.toggle('text-base');
+    			item.classList.toggle('font-semibold');
     			$$invalidate(6, frozen = false);
     		} else {
     			console.log('keyup: ' + event.key);
@@ -622,6 +625,7 @@ var app = (function () {
     		item.classList.toggle('h-7');
     		item.classList.toggle('w-7');
     		item.classList.toggle('text-base');
+    		item.classList.toggle('font-semibold');
     	}
 
     	function up() {
@@ -680,7 +684,7 @@ var app = (function () {
     		if ('coords' in $$props) $$invalidate(4, coords = $$props.coords);
     		if ('generatorcoords' in $$props) $$invalidate(5, generatorcoords = $$props.generatorcoords);
     		if ('frozen' in $$props) $$invalidate(6, frozen = $$props.frozen);
-    		if ('gameboard' in $$props) $$invalidate(9, gameboard = $$props.gameboard);
+    		if ('gameboard' in $$props) $$invalidate(7, gameboard = $$props.gameboard);
     	};
 
     	$$self.$capture_state = () => ({
@@ -709,7 +713,7 @@ var app = (function () {
     		if ('coords' in $$props) $$invalidate(4, coords = $$props.coords);
     		if ('generatorcoords' in $$props) $$invalidate(5, generatorcoords = $$props.generatorcoords);
     		if ('frozen' in $$props) $$invalidate(6, frozen = $$props.frozen);
-    		if ('gameboard' in $$props) $$invalidate(9, gameboard = $$props.gameboard);
+    		if ('gameboard' in $$props) $$invalidate(7, gameboard = $$props.gameboard);
     		if ('body' in $$props) body = $$props.body;
     	};
 
@@ -725,9 +729,9 @@ var app = (function () {
     		coords,
     		generatorcoords,
     		frozen,
+    		gameboard,
     		size,
     		movementInputs,
-    		gameboard,
     		click_handler,
     		click_handler_1,
     		click_handler_2,
@@ -740,12 +744,12 @@ var app = (function () {
     		super(options);
 
     		init(this, options, instance, create_fragment, safe_not_equal, {
-    			size: 7,
+    			size: 8,
     			coords: 4,
     			generatorcoords: 5,
-    			movementInputs: 8,
+    			movementInputs: 9,
     			frozen: 6,
-    			gameboard: 9
+    			gameboard: 7
     		});
 
     		dispatch_dev("SvelteRegisterComponent", {
@@ -757,7 +761,7 @@ var app = (function () {
     	}
 
     	get size() {
-    		return this.$$.ctx[7];
+    		return this.$$.ctx[8];
     	}
 
     	set size(value) {
@@ -781,7 +785,7 @@ var app = (function () {
     	}
 
     	get movementInputs() {
-    		return this.$$.ctx[8];
+    		return this.$$.ctx[9];
     	}
 
     	set movementInputs(value) {

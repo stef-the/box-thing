@@ -23,24 +23,25 @@
 		return templistB;
 	};
 
-	function generategame (range) {
+	function generategame (a, b) {
 		generatorcoords = [randomNumber(0, size[0]), randomNumber(0, size[1])]
+		gameboard[generatorcoords[1]][generatorcoords[0]] = randomNumber(a, b)
+		coords = generatorcoords
 	}
 
 	function game (id) {
 		const container = document.getElementById(id);
 		container.innerHTML = '';
 		let temp = '';
+		generategame(1, 5)
 
 		for (let i in gameboard) {
 			for (let j in gameboard[i]) {
-				console.log(gameboard[i][j])
 				temp += `<div id="block${i}-${j}" class="h-5 w-5 m-2 text-sm bg-red-300 hover:bg-yellow-200 flex flex-wrap justify-center items-center">${(!isNaN(gameboard[i][j])) ? gameboard[i][j] : ""}</div>`
 			}
 			temp += '<div class="w-full"></div>'
 		}
 		container.innerHTML += temp;
-		coords = [0, 0]
 		stoggle()
 	};
 
@@ -82,6 +83,7 @@
 			item.classList.toggle('h-7')
 			item.classList.toggle('w-7')
 			item.classList.toggle('text-base')
+			item.classList.toggle('font-semibold')
 
 			frozen = true;
 		} else { console.log('keydown: ' + event.key) }
@@ -116,6 +118,7 @@
 			item.classList.toggle('h-7')
 			item.classList.toggle('w-7')
 			item.classList.toggle('text-base')
+			item.classList.toggle('font-semibold')
 
 			frozen = false;
 		} else { console.log('keyup: ' + event.key) }
@@ -137,6 +140,7 @@
 		item.classList.toggle('h-7')
 		item.classList.toggle('w-7')
 		item.classList.toggle('text-base')
+		item.classList.toggle('font-semibold')
 	}
 
 	function up () {
