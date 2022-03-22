@@ -1,10 +1,14 @@
 <script>
 	import { onMount } from "svelte";
 
-	export const size = [23, 11]
-	export let coords = [0, 0]
+	export const size = [23, 11];
+	export let coords = [11, 5];
 	export let generatorcoords = [];
-	export const movementInputs = ['w', 'a', 's', 'd', 'ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight']
+	export let tempintA = 0;
+	export let tempintB = 0;
+	export let target = 0;
+	export let temptarget = 0;
+	export const movementInputs = ['w', 'a', 's', 'd', 'ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'];
 	export let frozen = false;
 	export let gameboard = buildgame(size[0], size[1]);
 
@@ -18,15 +22,46 @@
 			for (let j = 0; j < a; j++) {
 				templistA.push(0);
 			}
-			templistB.push(templistA)
+			templistB.push(templistA);
 		}
 		return templistB;
 	};
 
 	function generategame (a, b) {
-		generatorcoords = [randomNumber(0, size[0]), randomNumber(0, size[1])]
-		gameboard[generatorcoords[1]][generatorcoords[0]] = randomNumber(a, b)
-		coords = generatorcoords
+		for (let i in gameboard) {
+			for (let j in gameboard[i]) {
+				gameboard[i][j] = randomNumber(a, b)
+			}
+		}
+	}
+
+	function generategameOLD (a, b) {
+		generatorcoords = [randomNumber(0, size[0]), randomNumber(0, size[1])];
+		coords = generatorcoords;
+		temptarget = randomNumber(a, b);
+		gameboard[generatorcoords[1]][generatorcoords[0]] = temptarget;
+		target += temptarget;
+		do {
+			tempintA = (Math.random()>=0.5)? 1 : -1;
+			tempintB = randomNumber(0, 2)
+			generatorcoords[tempintB] += tempintA
+			console.log(gameboard)
+			console.log(generatorcoords)
+			if (gameboard[generatorcoords[0]][generatorcoords[1]] == 0)  {
+				temptarget = randomNumber(a, b);
+				gameboard[generatorcoords[1]][generatorcoords[0]] = temptarget;
+				target += temptarget;
+			} else { generatorcoords[tempintB] -= tempintA}
+
+			console.log(generatorcoords);
+		} while (
+			generatorcoords[0] > 0 && generatorcoords[0] < size[0] - 1 &&
+			generatorcoords[1] > 0 && generatorcoords[1] < size[1] - 1
+		);
+		target -= temptarget;
+		console.log(temptarget)
+		gameboard[generatorcoords[1]][generatorcoords[0]] = target;
+		console.log('generatorcoords');
 	}
 
 	function game (id) {
@@ -157,7 +192,7 @@
 
 	function down () {
 		stoggle()
-		if (coords[1] < size[1] - 1) { coords[1] += 1 }
+		if (coords[1] < size[1] - 1) { coords[1] += 1 } 
 		stoggle()
 	}
 

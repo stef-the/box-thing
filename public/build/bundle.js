@@ -400,27 +400,27 @@ var app = (function () {
     			button3.textContent = "→";
     			attr_dev(div0, "id", "app");
     			attr_dev(div0, "class", "w-full flex flex-wrap justify-center m-10");
-    			add_location(div0, file, 173, 1, 4982);
+    			add_location(div0, file, 208, 1, 6052);
     			attr_dev(button0, "id", "w");
     			attr_dev(button0, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 m-1 w-7 h-7");
-    			add_location(button0, file, 175, 2, 5114);
+    			add_location(button0, file, 210, 2, 6184);
     			attr_dev(button1, "id", "a");
     			attr_dev(button1, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 m-1 w-7 h-7");
-    			add_location(button1, file, 177, 3, 5318);
+    			add_location(button1, file, 212, 3, 6388);
     			attr_dev(button2, "id", "s");
     			attr_dev(button2, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 m-1 w-7 h-7");
-    			add_location(button2, file, 178, 3, 5465);
+    			add_location(button2, file, 213, 3, 6535);
     			attr_dev(button3, "id", "d");
     			attr_dev(button3, "class", "text-red-300 active:text-yellow-300 active:bg-gray-600 bg-gray-500 m-1 w-7 h-7");
-    			add_location(button3, file, 179, 3, 5612);
+    			add_location(button3, file, 214, 3, 6682);
     			attr_dev(div1, "id", "controlrow");
     			attr_dev(div1, "class", "flex justify-center w-full");
-    			add_location(div1, file, 176, 2, 5258);
+    			add_location(div1, file, 211, 2, 6328);
     			attr_dev(div2, "id", "controls");
     			attr_dev(div2, "class", "flex justify-center flex-wrap");
-    			add_location(div2, file, 174, 1, 5054);
+    			add_location(div2, file, 209, 1, 6124);
     			attr_dev(main, "class", "flex justify-center flex-wrap text-xs");
-    			add_location(main, file, 172, 0, 4928);
+    			add_location(main, file, 207, 0, 5998);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -441,10 +441,10 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(button0, "click", /*click_handler*/ ctx[10], false, false, false),
-    					listen_dev(button1, "click", /*click_handler_1*/ ctx[11], false, false, false),
-    					listen_dev(button2, "click", /*click_handler_2*/ ctx[12], false, false, false),
-    					listen_dev(button3, "click", /*click_handler_3*/ ctx[13], false, false, false)
+    					listen_dev(button0, "click", /*click_handler*/ ctx[14], false, false, false),
+    					listen_dev(button1, "click", /*click_handler_1*/ ctx[15], false, false, false),
+    					listen_dev(button2, "click", /*click_handler_2*/ ctx[16], false, false, false),
+    					listen_dev(button3, "click", /*click_handler_3*/ ctx[17], false, false, false)
     				];
 
     				mounted = true;
@@ -496,16 +496,53 @@ var app = (function () {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('App', slots, []);
     	const size = [23, 11];
-    	let { coords = [0, 0] } = $$props;
+    	let { coords = [11, 5] } = $$props;
     	let { generatorcoords = [] } = $$props;
+    	let { tempintA = 0 } = $$props;
+    	let { tempintB = 0 } = $$props;
+    	let { target = 0 } = $$props;
+    	let { temptarget = 0 } = $$props;
     	const movementInputs = ['w', 'a', 's', 'd', 'ArrowUp', 'ArrowLeft', 'ArrowDown', 'ArrowRight'];
     	let { frozen = false } = $$props;
     	let { gameboard = buildgame(size[0], size[1]) } = $$props;
 
     	function generategame(a, b) {
+    		for (let i in gameboard) {
+    			for (let j in gameboard[i]) {
+    				$$invalidate(11, gameboard[i][j] = randomNumber(a, b), gameboard);
+    			}
+    		}
+    	}
+
+    	function generategameOLD(a, b) {
     		$$invalidate(5, generatorcoords = [randomNumber(0, size[0]), randomNumber(0, size[1])]);
-    		$$invalidate(7, gameboard[generatorcoords[1]][generatorcoords[0]] = randomNumber(a, b), gameboard);
     		$$invalidate(4, coords = generatorcoords);
+    		$$invalidate(9, temptarget = randomNumber(a, b));
+    		$$invalidate(11, gameboard[generatorcoords[1]][generatorcoords[0]] = temptarget, gameboard);
+    		$$invalidate(8, target += temptarget);
+
+    		do {
+    			$$invalidate(6, tempintA = Math.random() >= 0.5 ? 1 : -1);
+    			$$invalidate(7, tempintB = randomNumber(0, 2));
+    			$$invalidate(5, generatorcoords[tempintB] += tempintA, generatorcoords);
+    			console.log(gameboard);
+    			console.log(generatorcoords);
+
+    			if (gameboard[generatorcoords[0]][generatorcoords[1]] == 0) {
+    				$$invalidate(9, temptarget = randomNumber(a, b));
+    				$$invalidate(11, gameboard[generatorcoords[1]][generatorcoords[0]] = temptarget, gameboard);
+    				$$invalidate(8, target += temptarget);
+    			} else {
+    				$$invalidate(5, generatorcoords[tempintB] -= tempintA, generatorcoords);
+    			}
+
+    			console.log(generatorcoords);
+    		} while (generatorcoords[0] > 0 && generatorcoords[0] < size[0] - 1 && generatorcoords[1] > 0 && generatorcoords[1] < size[1] - 1);
+
+    		$$invalidate(8, target -= temptarget);
+    		console.log(temptarget);
+    		$$invalidate(11, gameboard[generatorcoords[1]][generatorcoords[0]] = target, gameboard);
+    		console.log('generatorcoords');
     	}
 
     	function game(id) {
@@ -569,7 +606,7 @@ var app = (function () {
     			item.classList.toggle('w-7');
     			item.classList.toggle('text-base');
     			item.classList.toggle('font-semibold');
-    			$$invalidate(6, frozen = true);
+    			$$invalidate(10, frozen = true);
     		} else {
     			console.log('keydown: ' + event.key);
     		}
@@ -605,7 +642,7 @@ var app = (function () {
     			item.classList.toggle('w-7');
     			item.classList.toggle('text-base');
     			item.classList.toggle('font-semibold');
-    			$$invalidate(6, frozen = false);
+    			$$invalidate(10, frozen = false);
     		} else {
     			console.log('keyup: ' + event.key);
     		}
@@ -669,7 +706,17 @@ var app = (function () {
     	}
 
     	onMount(() => game('app'));
-    	const writable_props = ['coords', 'generatorcoords', 'frozen', 'gameboard'];
+
+    	const writable_props = [
+    		'coords',
+    		'generatorcoords',
+    		'tempintA',
+    		'tempintB',
+    		'target',
+    		'temptarget',
+    		'frozen',
+    		'gameboard'
+    	];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1.warn(`<App> was created with unknown prop '${key}'`);
@@ -683,8 +730,12 @@ var app = (function () {
     	$$self.$$set = $$props => {
     		if ('coords' in $$props) $$invalidate(4, coords = $$props.coords);
     		if ('generatorcoords' in $$props) $$invalidate(5, generatorcoords = $$props.generatorcoords);
-    		if ('frozen' in $$props) $$invalidate(6, frozen = $$props.frozen);
-    		if ('gameboard' in $$props) $$invalidate(7, gameboard = $$props.gameboard);
+    		if ('tempintA' in $$props) $$invalidate(6, tempintA = $$props.tempintA);
+    		if ('tempintB' in $$props) $$invalidate(7, tempintB = $$props.tempintB);
+    		if ('target' in $$props) $$invalidate(8, target = $$props.target);
+    		if ('temptarget' in $$props) $$invalidate(9, temptarget = $$props.temptarget);
+    		if ('frozen' in $$props) $$invalidate(10, frozen = $$props.frozen);
+    		if ('gameboard' in $$props) $$invalidate(11, gameboard = $$props.gameboard);
     	};
 
     	$$self.$capture_state = () => ({
@@ -692,12 +743,17 @@ var app = (function () {
     		size,
     		coords,
     		generatorcoords,
+    		tempintA,
+    		tempintB,
+    		target,
+    		temptarget,
     		movementInputs,
     		frozen,
     		gameboard,
     		randomNumber,
     		buildgame,
     		generategame,
+    		generategameOLD,
     		game,
     		body,
     		onkeydown_handler,
@@ -712,8 +768,12 @@ var app = (function () {
     	$$self.$inject_state = $$props => {
     		if ('coords' in $$props) $$invalidate(4, coords = $$props.coords);
     		if ('generatorcoords' in $$props) $$invalidate(5, generatorcoords = $$props.generatorcoords);
-    		if ('frozen' in $$props) $$invalidate(6, frozen = $$props.frozen);
-    		if ('gameboard' in $$props) $$invalidate(7, gameboard = $$props.gameboard);
+    		if ('tempintA' in $$props) $$invalidate(6, tempintA = $$props.tempintA);
+    		if ('tempintB' in $$props) $$invalidate(7, tempintB = $$props.tempintB);
+    		if ('target' in $$props) $$invalidate(8, target = $$props.target);
+    		if ('temptarget' in $$props) $$invalidate(9, temptarget = $$props.temptarget);
+    		if ('frozen' in $$props) $$invalidate(10, frozen = $$props.frozen);
+    		if ('gameboard' in $$props) $$invalidate(11, gameboard = $$props.gameboard);
     		if ('body' in $$props) body = $$props.body;
     	};
 
@@ -728,6 +788,10 @@ var app = (function () {
     		right,
     		coords,
     		generatorcoords,
+    		tempintA,
+    		tempintB,
+    		target,
+    		temptarget,
     		frozen,
     		gameboard,
     		size,
@@ -744,12 +808,16 @@ var app = (function () {
     		super(options);
 
     		init(this, options, instance, create_fragment, safe_not_equal, {
-    			size: 8,
+    			size: 12,
     			coords: 4,
     			generatorcoords: 5,
-    			movementInputs: 9,
-    			frozen: 6,
-    			gameboard: 7
+    			tempintA: 6,
+    			tempintB: 7,
+    			target: 8,
+    			temptarget: 9,
+    			movementInputs: 13,
+    			frozen: 10,
+    			gameboard: 11
     		});
 
     		dispatch_dev("SvelteRegisterComponent", {
@@ -761,7 +829,7 @@ var app = (function () {
     	}
 
     	get size() {
-    		return this.$$.ctx[8];
+    		return this.$$.ctx[12];
     	}
 
     	set size(value) {
@@ -784,8 +852,40 @@ var app = (function () {
     		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
+    	get tempintA() {
+    		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set tempintA(value) {
+    		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get tempintB() {
+    		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set tempintB(value) {
+    		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get target() {
+    		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set target(value) {
+    		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get temptarget() {
+    		throw new Error("<App>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set temptarget(value) {
+    		throw new Error("<App>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
     	get movementInputs() {
-    		return this.$$.ctx[9];
+    		return this.$$.ctx[13];
     	}
 
     	set movementInputs(value) {
